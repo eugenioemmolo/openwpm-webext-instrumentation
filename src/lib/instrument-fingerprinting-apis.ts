@@ -18,9 +18,9 @@ export function instrumentFingerprintingApis({
   });
 
   instrumentObjectProperty(window.URL, "window.URL", "createObjectURL");
-  instrumentObjectProperty(window.XMLHttpRequest.prototype, "window.XMLHttpRequest", "constructor");
+  instrumentObjectProperty(XMLHttpRequest.prototype, "window.XMLHttpRequest", "constructor");
 
-  instrumentObject(window.BroadcastChannel, "BroadcastChannel", {
+  instrumentObject(BroadcastChannel, "BroadcastChannel", {
   'propertiesToInstrument': ["onmessage", "name", "onmessageerror",
                   "postMessage", "close"]
   });
@@ -41,14 +41,14 @@ export function instrumentFingerprintingApis({
   instrumentObjectProperty(window.document, "document", property);
   });
 
-  instrumentObject(window.WebAssembly, "WebAssembly", {
+  instrumentObject(WebAssembly, "WebAssembly", {
   'propertiesToInstrument': ["Global", "Instance", "instantiate",
   "instantiateStreaming", "Memory", "Module", "Table",
   "compile", "CompileError", "constructor", "LinkError", "RuntimeError",
   "toLocaleString", "toString", "validate", "valueOf"]
   });
 
-  instrumentObject(window.Math, "Math", {
+  instrumentObject(Math, "Math", {
   'propertiesToInstrument': ["abs", "exp", "log", "log10", "log2", "max", "min", "pow",
   "random", "sign", "sqrt", "acos", "acosh", "asin", "asinh",
   "atan", "atanh", "cbrt", "ceil", "clz32", "cos", "cosh",
@@ -56,12 +56,12 @@ export function instrumentFingerprintingApis({
   "sinh", "tan", "tanh", "toSource", "trunc"]
   });
 
-  instrumentObject(window.Worker.prototype, "Worker", {
+  instrumentObject(Worker.prototype, "Worker", {
   'propertiesToInstrument': ["postMessage", "terminate", "onerror", "onmessage", "Worker",
   "addEventListener", "constructor"]
   });
 
-  instrumentObject(window.WebSocket.prototype, "WebSocket", {
+  instrumentObject(WebSocket.prototype, "WebSocket", {
   'propertiesToInstrument': ["onopen", "readyState", "onerror", "onmessage", "url",
   "URL", "protocol", "extensions", "constructor"]
   });
