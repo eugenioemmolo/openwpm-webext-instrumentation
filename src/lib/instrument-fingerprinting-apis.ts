@@ -3,122 +3,67 @@ export function instrumentFingerprintingApis({
   instrumentObject,
 }) {
   // Access to navigator properties
-  const navigatorProperties = [
-    "appCodeName",
-    "appName",
-    "appVersion",
-    "buildID",
-    "cookieEnabled",
-    "doNotTrack",
-    "geolocation",
-    "language",
-    "languages",
-    "onLine",
-    "oscpu",
-    "platform",
-    "product",
-    "productSub",
-    "userAgent",
-    "vendorSub",
-    "vendor",
+  //Properties of window object
+  var windowProperties = ["atob", "decodeURIComponent", "eval",
+  "localStorage", "sessionStorage", "XMLHttpRequest",
+  "Uint32Array", "addEventListener", "Uint8Array",
+  "onmessageerror", "encodeURIComponent"];
+  windowProperties.forEach(function (property) {
+  instrumentObjectProperty(window, "window", property);
+  });
+
+  instrumentObject(window, "window", {
+  'propertiesToInstrument': ["setTimeout", "setInterval", "clearInterval", "Worker",
+  "onmessage", "BroadcastChannel", "postMessage", "WebAssembly", "WebSocket"]
+  });
+
+  instrumentObjectProperty(window.URL, "window.URL", "createObjectURL");
+  instrumentObjectProperty(window.XMLHttpRequest.prototype, "window.XMLHttpRequest", "constructor");
+
+  instrumentObject(window.BroadcastChannel, "BroadcastChannel", {
+  'propertiesToInstrument': ["onmessage", "name", "onmessageerror",
+                  "postMessage", "close"]
+  });
+
+  // Access to navigator properties
+  var navigatorProperties = ["platform", "product",
+  "productSub", "userAgent", "vendorSub",
+  "vendor", "javaEnabled", "hardwareConcurrency"
   ];
-  navigatorProperties.forEach(function(property) {
-    instrumentObjectProperty(window.navigator, "window.navigator", property);
+  navigatorProperties.forEach(function (property) {
+  instrumentObjectProperty(window.navigator, "navigator", property);
   });
 
-  // Access to screen properties
-  // instrumentObject(window.screen, "window.screen");
-  // TODO: why do we instrument only two screen properties
-  const screenProperties = ["pixelDepth", "colorDepth"];
-  screenProperties.forEach(function(property) {
-    instrumentObjectProperty(window.screen, "window.screen", property);
-  });
-
-  // Access to plugins
-  const pluginProperties = [
-    "name",
-    "filename",
-    "description",
-    "version",
-    "length",
+  var documentProperties = ["addEventListener", "appendChild", "baseURI",
+      "removeChild", "URL", "scripts", "createElement", "readyState"
   ];
-  for (let i = 0; i < window.navigator.plugins.length; i++) {
-    const pluginName = window.navigator.plugins[i].name;
-    pluginProperties.forEach(function(property) {
-      instrumentObjectProperty(
-        window.navigator.plugins[pluginName],
-        "window.navigator.plugins[" + pluginName + "]",
-        property,
-      );
-    });
-  }
-
-  // Access to MIMETypes
-  const mimeTypeProperties = ["description", "suffixes", "type"];
-  for (let i = 0; i < window.navigator.mimeTypes.length; i++) {
-    const mimeTypeName = ((window.navigator.mimeTypes[
-      i
-    ] as unknown) as MimeType).type; // note: upstream typings seems to be incorrect
-    mimeTypeProperties.forEach(function(property) {
-      instrumentObjectProperty(
-        window.navigator.mimeTypes[mimeTypeName],
-        "window.navigator.mimeTypes[" + mimeTypeName + "]",
-        property,
-      );
-    });
-  }
-  // Name, localStorage, and sessionsStorage logging
-  // Instrumenting window.localStorage directly doesn't seem to work, so the Storage
-  // prototype must be instrumented instead. Unfortunately this fails to differentiate
-  // between sessionStorage and localStorage. Instead, you'll have to look for a sequence
-  // of a get for the localStorage object followed by a getItem/setItem for the Storage object.
-  const windowProperties = ["name", "localStorage", "sessionStorage"];
-  windowProperties.forEach(function(property) {
-    instrumentObjectProperty(window, "window", property);
-  });
-  instrumentObject(window.Storage.prototype, "window.Storage");
-
-  // Access to document.cookie
-  instrumentObjectProperty(window.document, "window.document", "cookie", {
-    logCallStack: true,
+  documentProperties.forEach(function (property) {
+  instrumentObjectProperty(window.document, "document", property);
   });
 
-  // Access to document.referrer
-  instrumentObjectProperty(window.document, "window.document", "referrer", {
-    logCallStack: true,
+  instrumentObject(window.WebAssembly, "WebAssembly", {
+  'propertiesToInstrument': ["Global", "Instance", "instantiate",
+  "instantiateStreaming", "Memory", "Module", "Table",
+  "compile", "CompileError", "constructor", "LinkError", "RuntimeError",
+  "toLocaleString", "toString", "validate", "valueOf"]
   });
 
-  // Access to canvas
-  instrumentObject(window.HTMLCanvasElement.prototype, "HTMLCanvasElement");
+  instrumentObject(window.Math, "Math", {
+  'propertiesToInstrument': ["abs", "exp", "log", "log10", "log2", "max", "min", "pow",
+  "random", "sign", "sqrt", "acos", "acosh", "asin", "asinh",
+  "atan", "atanh", "cbrt", "ceil", "clz32", "cos", "cosh",
+  "expm1", "floor", "fround", "hypot", "imul", "round", "sin",
+  "sinh", "tan", "tanh", "toSource", "trunc"]
+  });
 
-  const excludedProperties = [
-    "quadraticCurveTo",
-    "lineTo",
-    "transform",
-    "globalAlpha",
-    "moveTo",
-    "drawImage",
-    "setTransform",
-    "clearRect",
-    "closePath",
-    "beginPath",
-    "canvas",
-    "translate",
-  ];
-  instrumentObject(
-    window.CanvasRenderingContext2D.prototype,
-    "CanvasRenderingContext2D",
-    { excludedProperties },
-  );
+  instrumentObject(window.Worker.prototype, "Worker", {
+  'propertiesToInstrument': ["postMessage", "terminate", "onerror", "onmessage", "Worker",
+  "addEventListener", "constructor"]
+  });
 
-  // Access to webRTC
-  instrumentObject(window.RTCPeerConnection.prototype, "RTCPeerConnection");
+  instrumentObject(window.WebSocket.prototype, "WebSocket", {
+  'propertiesToInstrument': ["onopen", "readyState", "onerror", "onmessage", "url",
+  "URL", "protocol", "extensions", "constructor"]
+  });
 
-  // Access to Audio API
-  instrumentObject(window.AudioContext.prototype, "AudioContext");
-  instrumentObject(window.OfflineAudioContext.prototype, "OfflineAudioContext");
-  instrumentObject(window.OscillatorNode.prototype, "OscillatorNode");
-  instrumentObject(window.AnalyserNode.prototype, "AnalyserNode");
-  instrumentObject(window.GainNode.prototype, "GainNode");
-  instrumentObject(window.ScriptProcessorNode.prototype, "ScriptProcessorNode");
 }
