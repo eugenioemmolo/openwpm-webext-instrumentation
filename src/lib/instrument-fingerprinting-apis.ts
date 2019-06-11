@@ -76,8 +76,8 @@ export function instrumentFingerprintingApis({
   });
   */
   
-  const windowProperties = ["localStorage", "sessionStorage"];
-  windowProperties.forEach(function(property) {
+  const windowProp = ["localStorage", "sessionStorage"];
+  windowProp.forEach(function(property) {
     instrumentObjectProperty(window, "window", property);
   });
   instrumentObject(window.Storage.prototype, "window.Storage");
