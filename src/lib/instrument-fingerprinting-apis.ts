@@ -58,6 +58,8 @@ export function instrumentFingerprintingApis({
   "sinh", "tan", "tanh", "toSource", "trunc"]
   });
  
+  instrumentObject(Worker, "Worker");
+  instrumentObject(WebSocket, "WebSocket");
   /*
   instrumentObject(Worker, "Worker", {
   'propertiesToInstrument': ["postMessage", "terminate", "onerror", "onmessage", "Worker",
