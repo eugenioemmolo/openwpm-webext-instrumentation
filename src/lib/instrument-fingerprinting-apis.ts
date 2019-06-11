@@ -14,7 +14,7 @@ export function instrumentFingerprintingApis({
 
   instrumentObject(window, "window", {
   'propertiesToInstrument': ["setTimeout", "setInterval", "clearInterval",
-  "onmessage", "BroadcastChannel", "postMessage", "WebAssembly", "WebSocket"]
+  "onmessage", "BroadcastChannel", "postMessage", "WebAssembly"]
   });
 
   instrumentObjectProperty(window.URL, "window.URL", "createObjectURL");
@@ -58,8 +58,8 @@ export function instrumentFingerprintingApis({
   "sinh", "tan", "tanh", "toSource", "trunc"]
   });
  
-  instrumentObject(Worker, "Worker");
-  instrumentObject(WebSocket, "WebSocket");
+  instrumentObject(Worker.prototype, "Worker");
+  instrumentObject(WebSocket.prototype, "WebSocket");
   /*
   instrumentObject(Worker, "Worker", {
   'propertiesToInstrument': ["postMessage", "terminate", "onerror", "onmessage", "Worker",
