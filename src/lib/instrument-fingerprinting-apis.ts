@@ -18,13 +18,14 @@ export function instrumentFingerprintingApis({
   });
 
   instrumentObjectProperty(window.URL, "window.URL", "createObjectURL");
-  
+  /*
   instrumentObjectProperty(XMLHttpRequest, "window.XMLHttpRequest", "constructor");
   
   instrumentObject(BroadcastChannel, "BroadcastChannel", {
   'propertiesToInstrument': ["onmessage", "name", "onmessageerror",
                   "postMessage", "close"]
   });
+  */
 
   // Access to navigator properties
   var navigatorProperties = ["platform", "product",
@@ -57,6 +58,7 @@ export function instrumentFingerprintingApis({
   "sinh", "tan", "tanh", "toSource", "trunc"]
   });
  
+  /*
   instrumentObject(Worker, "Worker", {
   'propertiesToInstrument': ["postMessage", "terminate", "onerror", "onmessage", "Worker",
   "addEventListener", "constructor"]
@@ -66,5 +68,6 @@ export function instrumentFingerprintingApis({
   'propertiesToInstrument': ["onopen", "readyState", "onerror", "onmessage", "url",
   "URL", "protocol", "extensions", "constructor"]
   });
+  */
 
 }
