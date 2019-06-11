@@ -13,7 +13,7 @@ export function instrumentFingerprintingApis({
   });
 
   instrumentObject(window, "window", {
-  'propertiesToInstrument': ["setTimeout", "setInterval", "clearInterval", "Worker",
+  'propertiesToInstrument': ["setTimeout", "setInterval", "clearInterval",
   "onmessage", "BroadcastChannel", "postMessage", "WebAssembly", "WebSocket"]
   });
 
