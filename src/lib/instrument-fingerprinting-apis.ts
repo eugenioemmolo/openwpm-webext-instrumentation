@@ -5,17 +5,19 @@ export function instrumentFingerprintingApis({
   // Access to navigator properties
   //Properties of window object
   var windowProperties = ["atob", "decodeURIComponent", "eval",
-  "localStorage", "sessionStorage", "XMLHttpRequest",
+  "localStorage", "sessionStorage",
   "Uint32Array", "addEventListener", "Uint8Array",
-  "onmessageerror", "encodeURIComponent"];
+  "onmessageerror", "encodeURIComponent", "setTimeout", "setInterval", "clearInterval",
+  "onmessage", "postMessage"];
   windowProperties.forEach(function (property) {
   instrumentObjectProperty(window, "window", property);
   });
-
+  
+  /*
   instrumentObject(window, "window", {
-  'propertiesToInstrument': ["setTimeout", "setInterval", "clearInterval",
-  "onmessage", "BroadcastChannel", "postMessage", "WebAssembly"]
+  'propertiesToInstrument': []
   });
+  */
 
   instrumentObjectProperty(window.URL, "window.URL", "createObjectURL");
   /*
@@ -60,6 +62,8 @@ export function instrumentFingerprintingApis({
  
   instrumentObject(Worker.prototype, "Worker");
   instrumentObject(WebSocket.prototype, "WebSocket");
+  instrumentObject(XMLHttpRequest.prototype, "XMLHttpRequest");
+  instrumentObject(BroadcastChannel.prototype, "BroadcastChannel")
   /*
   instrumentObject(Worker, "Worker", {
   'propertiesToInstrument': ["postMessage", "terminate", "onerror", "onmessage", "Worker",
@@ -71,5 +75,11 @@ export function instrumentFingerprintingApis({
   "URL", "protocol", "extensions", "constructor"]
   });
   */
+  
+  const windowProperties = ["localStorage", "sessionStorage"];
+  windowProperties.forEach(function(property) {
+    instrumentObjectProperty(window, "window", property);
+  });
+  instrumentObject(window.Storage.prototype, "window.Storage");
 
 }
