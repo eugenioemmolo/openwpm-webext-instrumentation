@@ -45,13 +45,15 @@ export function instrumentFingerprintingApis({
   instrumentObjectProperty(window.document, "document", property);
   });
   
+  /*
   instrumentObject(WebAssembly, "WebAssembly", {
   'propertiesToInstrument': ["Global", "Instance", "instantiate",
   "instantiateStreaming", "Memory", "Module", "Table",
   "compile", "CompileError", "constructor", "LinkError", "RuntimeError",
   "toLocaleString", "toString", "validate", "valueOf"]
   });
-
+  */
+  
   instrumentObject(Math, "Math", {
   'propertiesToInstrument': ["abs", "exp", "log", "log10", "log2", "max", "min", "pow",
   "random", "sign", "sqrt", "acos", "acosh", "asin", "asinh",
@@ -63,7 +65,8 @@ export function instrumentFingerprintingApis({
   instrumentObject(Worker.prototype, "Worker");
   instrumentObject(WebSocket.prototype, "WebSocket");
   instrumentObject(XMLHttpRequest.prototype, "XMLHttpRequest");
-  instrumentObject(BroadcastChannel.prototype, "BroadcastChannel")
+  instrumentObject(BroadcastChannel.prototype, "BroadcastChannel");
+  instrumentObject(WebAssembly.prototype, "WebAssembly");
   /*
   instrumentObject(Worker, "Worker", {
   'propertiesToInstrument': ["postMessage", "terminate", "onerror", "onmessage", "Worker",
