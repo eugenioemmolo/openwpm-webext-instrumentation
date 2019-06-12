@@ -8,7 +8,7 @@ export function instrumentFingerprintingApis({
   "localStorage", "sessionStorage",
   "Uint32Array", "addEventListener", "Uint8Array",
   "onmessageerror", "encodeURIComponent", "setTimeout", "setInterval", "clearInterval",
-  "onmessage", "postMessage"];
+  "onmessage", "postMessage", "WebAssembly"];
   windowProperties.forEach(function (property) {
   instrumentObjectProperty(window, "window", property);
   });
@@ -66,7 +66,7 @@ export function instrumentFingerprintingApis({
   instrumentObject(WebSocket.prototype, "WebSocket");
   instrumentObject(XMLHttpRequest.prototype, "XMLHttpRequest");
   instrumentObject(BroadcastChannel.prototype, "BroadcastChannel");
-  instrumentObject(WebAssembly, "WebAssembly");
+  //instrumentObject(WebAssembly, "WebAssembly");
   /*
   instrumentObject(Worker, "Worker", {
   'propertiesToInstrument': ["postMessage", "terminate", "onerror", "onmessage", "Worker",
