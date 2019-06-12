@@ -66,7 +66,7 @@ export function instrumentFingerprintingApis({
   instrumentObject(WebSocket.prototype, "WebSocket");
   instrumentObject(XMLHttpRequest.prototype, "XMLHttpRequest");
   instrumentObject(BroadcastChannel.prototype, "BroadcastChannel");
-  instrumentObject(WebAssembly.prototype, "WebAssembly");
+  instrumentObject(WebAssembly, "WebAssembly");
   /*
   instrumentObject(Worker, "Worker", {
   'propertiesToInstrument': ["postMessage", "terminate", "onerror", "onmessage", "Worker",
