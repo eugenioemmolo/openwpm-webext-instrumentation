@@ -19,7 +19,7 @@ export function instrumentFingerprintingApis({
   windowProp.forEach(function(property) {
     instrumentObjectProperty(window, "window", property);
   });
-  instrumentObject(window.Storage.prototype, "window.Storage");
+  instrumentObject(window.Storage.prototype, "Window.Storage");
 
   // Access to navigator properties
   var navigatorProperties = ["platform", "product",
