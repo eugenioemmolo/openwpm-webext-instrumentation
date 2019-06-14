@@ -46,9 +46,9 @@ export function instrumentFingerprintingApis({
  
   instrumentObject(Worker.prototype, "Worker");
   instrumentObject(WebSocket.prototype, "WebSocket");
-  instrumentObject(XMLHttpRequest.prototype, "XMLHttpRequest");
   instrumentObject(BroadcastChannel.prototype, "BroadcastChannel");
   
+  //instrumentObject(XMLHttpRequest.prototype, "XMLHttpRequest");
    /*
   instrumentObjectProperty(XMLHttpRequest, "window.XMLHttpRequest", "constructor");
   
